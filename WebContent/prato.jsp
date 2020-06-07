@@ -24,6 +24,7 @@ if(user == null){
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="js/script.js"></script>
 </head>
 <body style="background-color: #8B0000">
 <div class="container" style="background-color: #FFB500; border-radius: 2px;">
@@ -75,59 +76,6 @@ ${msg}
 </div>
 
 <div id="resultado"></div>
-<script>
-	$("#titulo").css({"font-size":"35px"});
-	
-	$(".btn").css({"box-shadow": "2px 2px 10px grey"});
-	
-	setInterval(function(){hora()}, 1000);
-	setInterval(function(){atualizar()}, 5000);
-	
-	function hora(){
-		var tempo = new Date();
-		var ano = tempo.getFullYear();
-		var mes = tempo.getMonth();
-		var dia = tempo.getDate();
-		
-		var hora = tempo.getHours();
-		var minuto = tempo.getMinutes();
-		var segundo = tempo.getSeconds();
-		
-		if(mes.toString().length < 2){
-			mes = "0".concat(mes);
-		}
-		
-		if(dia.toString().length < 2){
-			dia = "0".concat(dia);
-		}
-		
-		if(hora.toString().length < 2){
-			hora = "0".concat(hora);
-		}
-		
-		if(minuto.toString().length < 2){
-			minuto = "0".concat(minuto);
-		}
-		
-		if(segundo.toString().length < 2){
-			segundo = "0".concat(segundo);
-		}
-		
-		var semana = new Array(7);
-		semana[0] = "Domingo";
-		semana[1] = "Segunda";
-		semana[2] = "Terça";
-		semana[3] = "Quarta";
-		semana[4] = "Quinta";
-		semana[5] = "Sexta";
-		semana[6] = "Sábado";
 
-		  var diasemana = semana[tempo.getDay()];
-		
-		$("#relogio").html(diasemana +", "+dia+"/"+mes+"/"+ano+" - "+hora+":"+minuto+":"+segundo);
-		
-	}
-
-</script>
 </body>
 </html>

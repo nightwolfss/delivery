@@ -1,0 +1,17 @@
+body {
+	margin: 0px;
+}
+
+.container {
+	width: 100vw;
+	height: 50vh;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center
+}
+
+#centro {
+	width: 300px;
+	height: 300px;
+}

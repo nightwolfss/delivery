@@ -33,6 +33,8 @@ if(user == null){
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="icons/css/all.css">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="js/jquery.mask.min.js"></script>
+<script src="js/pedido.js"></script>
 </head>
 
 <body style="background-color: #8B0000">
@@ -76,7 +78,7 @@ for(Cliente c : clientes){
 
 <textarea id='prato' name='prato' class="form-control" aria-label="With textarea" style=' min-width:300px; max-width:100%;min-height:100px; height:100%; width:50%;'></textarea><p>
 <table>
-	<tr><td>Valor:</td><td><input type="text" placeholder="Ex: 15.50" name="preco" style="width: 100px;"></td><td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+	<tr><td>Valor:</td><td><input type="text" placeholder="Ex: 15.50" name="preco" id="valor" style="width: 100px;"></td><td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
 	  Salvar
 	</button></td></tr>
 </table>
@@ -149,72 +151,5 @@ for(Pedido p : pedidos){
 </tbody>
 </table>
 
-<script>
-$("#titulo").css({"font-size":"35px"});
-
-if($("#tabela2").width() > $("#prato").width()){
-	$("#prato").width($("#tabela2").width());
-	$("#barratopo").width($(window).width());
-}
-
-setInterval(function(){hora()}, 1000);
-
-function hora(){
-	var tempo = new Date();
-	var ano = tempo.getFullYear();
-	var mes = tempo.getMonth();
-	var dia = tempo.getDate();
-	
-	var hora = tempo.getHours();
-	var minuto = tempo.getMinutes();
-	var segundo = tempo.getSeconds();
-	
-	if(mes.toString().length < 2){
-		mes = "0".concat(mes);
-	}
-	
-	if(dia.toString().length < 2){
-		dia = "0".concat(dia);
-	}
-	
-	if(hora.toString().length < 2){
-		hora = "0".concat(hora);
-	}
-	
-	if(minuto.toString().length < 2){
-		minuto = "0".concat(minuto);
-	}
-	
-	if(segundo.toString().length < 2){
-		segundo = "0".concat(segundo);
-	}
-	
-	var semana = new Array(7);
-	semana[0] = "Domingo";
-	semana[1] = "Segunda";
-	semana[2] = "Terça";
-	semana[3] = "Quarta";
-	semana[4] = "Quinta";
-	semana[5] = "Sexta";
-	semana[6] = "Sábado";
-
-	  var diasemana = semana[tempo.getDay()];
-	
-	$("#relogio").html(diasemana +", "+dia+"/"+mes+"/"+ano+" - "+hora+":"+minuto+":"+segundo);
-	
-}
-
-    function carrinho(){
-    	var a = document.querySelectorAll("#tabela1 tr");
-    	var aux = "";
-    		for(count=0; count<a.length -1; count++){
-    	    	if(pedidos.itens[count].checked){
-    	        	aux = aux.concat(pedidos.itens[count].value + " - ");
-    	        }
-    	    }
-    		$("#prato").val(aux);
-    		$("#quentinha").css("display","") ;    	    
-    	}
-</script>
 </body>
 </html>
