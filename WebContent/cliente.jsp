@@ -5,7 +5,14 @@
     pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%String uri = request.getRequestURI();
-String pageName = uri.substring(uri.lastIndexOf("/")+1);%>
+String pageName = uri.substring(uri.lastIndexOf("/")+1);
+
+String user = (String) session.getAttribute("usuario");
+Integer iduser = (Integer) session.getAttribute("idusuario");
+if(user == null){
+	request.getRequestDispatcher("login.jsp").forward(request, response);
+}
+%>
 <jsp:useBean id="dao" class="entity.Cliente"/>
 <!DOCTYPE html>
 <html>
@@ -31,7 +38,7 @@ String pageName = uri.substring(uri.lastIndexOf("/")+1);%>
 <hr>
 
 <div class="container" style="background-color: white; border-radius: 2px;">
-<span id="relogio"></span>
+<span id="relogio">Hoje: </span>
 </div>
 
 <hr>
@@ -43,7 +50,7 @@ String pageName = uri.substring(uri.lastIndexOf("/")+1);%>
 </div>
 
     <span id="msg" class="container">${msg}</span>
-
+<span id="tempo"></span>
 <div class="container" id="tabcliente">
 	<form action="Controller?cmd=gravarcliente" method="post" style="background-color: white; padding: 10px; border-radius: 5px;">
 	
@@ -65,6 +72,7 @@ String pageName = uri.substring(uri.lastIndexOf("/")+1);%>
 		<div class="form-group">
 		    <label>Observações</label>
 		  	<textarea name="obs" class="form-control" aria-label="With textarea"></textarea>
+		  	<input type="hidden" name="idDono" value="<%=iduser%>">
 		</div>
 		
 		<input type="submit" value="Gravar Cliente">
@@ -79,7 +87,7 @@ String pageName = uri.substring(uri.lastIndexOf("/")+1);%>
 <%
 try{
 	
-	List<Cliente> lista = dao.getLista();
+	List<Cliente> lista = dao.getListaPorLogin(iduser);
 	for(Cliente c : lista){ 
 	%>
 		<tr><input type="hidden" id="idescrita" value="<%=c.getId()%>">
@@ -167,6 +175,8 @@ $(document).ready(function(){
 $("#titulo").css({"font-size":"35px"});
 	
 	setInterval(function(){hora()}, 1000);
+	setInterval(function(){startCountdown()}, 1000);
+	
 	
 	function hora(){
 		var tempo = new Date();
@@ -214,6 +224,7 @@ $("#titulo").css({"font-size":"35px"});
 	}
 
 });
+
 </script>
 
 </body>

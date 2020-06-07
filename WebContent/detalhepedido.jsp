@@ -4,6 +4,12 @@
 <%@page import="entity.Pedido"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+    
+<%String user = (String) session.getAttribute("usuario");
+if(user == null){
+	request.getRequestDispatcher("login.jsp").forward(request, response);
+}
+%>
     <jsp:useBean id="ped" class="entity.Pedido"/>
 <!DOCTYPE html>
 <html>

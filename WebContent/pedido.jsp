@@ -8,7 +8,14 @@
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%String uri = request.getRequestURI();
-String pageName = uri.substring(uri.lastIndexOf("/")+1);%>
+String pageName = uri.substring(uri.lastIndexOf("/")+1);
+
+String user = (String) session.getAttribute("usuario");
+Integer iduser = (Integer) session.getAttribute("idusuario");
+if(user == null){
+	request.getRequestDispatcher("login.jsp").forward(request, response);
+}
+%>
 
 <jsp:useBean id="cli" class="entity.Cliente"/>
 <jsp:useBean id="pra" class="entity.Prato"/>
@@ -55,7 +62,7 @@ ${msg}
 Cliente: 
 <select name="idcliente" class="custom-select my-1 mr-sm-2">
 <%
-List<Cliente> clientes = cli.getLista();
+List<Cliente> clientes = cli.getListaPorLogin(iduser);
 for(Cliente c : clientes){
 %>	
 	<option value="<%=c.getId()%>"><%=c.getNome()%></option>
@@ -84,13 +91,15 @@ for(Cliente c : clientes){
 <table class="table" id="tabela1">
 <tr><th>#</th><th>Nome</th><th>Categoria</th>
 <%
-List<Prato> pratos = pra.getListaPratos();
+List<Prato> pratos = pra.getListaPratosPorLogin(iduser);
 for(Prato p : pratos){
 %>	
 	<tr><td><input type="checkbox" name="itens" value="<%=p.getNome()%>"></td><td><%=p.getNome()%></td><td><%=p.getCategoria()%></td></tr>
 		
 <%}%>
 </table>
+
+<input type="hidden" name="idDono" value="<%=iduser%>">
 <input type="button" class="btn btn-success" value="Adicionar" onclick="carrinho()"><br>
 
 <!-- Modal -->
@@ -119,7 +128,7 @@ for(Prato p : pratos){
 <p>
 <table id="tabela2" class="table table-sm table-striped container" style="background-color: white; border-radius: 2px; box-shadow: 10px 10px 50px grey;">
 	<thead class="thead-dark"><tr><th>ID</th><th>Cliente</th><th>Endereço</th><th>Prato</th><th>Hora do Pedido</th><th>Observação</th><th>Preço</th><th>Deletar</th></tr></thead>
-<%List<Pedido> pedidos = ped.getLista();
+<%List<Pedido> pedidos = ped.getListaPorLogin(iduser);
 for(Pedido p : pedidos){
 %>
 <tbody>

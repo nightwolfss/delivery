@@ -1,10 +1,19 @@
+<%@page import="java.util.Date"%>
 <%@page import="persistence.LembreteDao"%>
 <%@page import="entity.Lembrete"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%String uri = request.getRequestURI();
-String pageName = uri.substring(uri.lastIndexOf("/")+1);%>
+String pageName = uri.substring(uri.lastIndexOf("/")+1);
+
+String user = (String) session.getAttribute("usuario");
+Integer iduser = (Integer) session.getAttribute("idusuario");
+
+if(user == null){
+	request.getRequestDispatcher("login.jsp").forward(request, response);
+}
+%>
 <jsp:useBean id="dao" class="entity.Lembrete"/>
 <jsp:useBean id="pedido" class="entity.Pedido"/>
 
@@ -27,27 +36,28 @@ String pageName = uri.substring(uri.lastIndexOf("/")+1);%>
 </div>
 <hr>
 <div class="container" style="background-color: white; border-radius: 2px;">
-<span id="relogio"></span>
+<span id="relogio">hoje: </span> <span><%=user%></span>
 </div>
 <hr>
 <div class="container">
 <div class="jumbotron">
-  <h1 class="display-4">JP Refeições!</h1>
+  <h1 class="display-4">Refeições SA.</h1>
   <p class="lead"></p>
   <hr class="my-4">
   <span id="msg">${msg}</span>
-  <table class="table">
+  <table class="table" id="tabela1">
 <%
-	ArrayList<Lembrete> lembretes = dao.getLista();
+	ArrayList<Lembrete> lembretes = dao.getListaPorLogin(iduser);
 	try{
 	  	if(lembretes.size() > 0){
 	  	%>
-			<tr><td colspan="2" style="width: 25px;"><span>Lembretes:</span></td><td><button type="button" class="badge badge-primary" data-toggle="modal" data-target="#exampleModalCenter">Novo</button></td></tr>
+			<tr><td colspan="2" style="width: 25px;"><span>Lembretes:</span></td><td></td><td><button type="button" class="badge badge-primary" data-toggle="modal" data-target="#exampleModalCenter">Novo</button></td></tr>
 		<%
 		  	for(Lembrete lembrete : lembretes){
-		%>
+		%><input type="hidden" id="escondido" value="<%=lembrete.getMes()%> <%=lembrete.getDia()%>, <%=lembrete.getAno()%> <%=lembrete.getHora()%>:<%=lembrete.getMin()%>">
 			<tr  data-toggle="tooltip" data-placement="right" title="<%=lembrete.getTexto()%>"><td style="width: 25px;"><%=lembretes.indexOf(lembrete) + 1%></td>
 			<td><span class="titulolembrete"><%=lembrete.getTitulo()%></span></td>
+			<td><span class="tempolembrete" id="tempolembrete"><%=lembrete.getMes()%> <%=lembrete.getDia()%>, <%=lembrete.getAno()%> <%=lembrete.getHora()%>:<%=lembrete.getMin()%></span></td>
 			<td><a href="Controller?cmd=deletarlembrete&id=<%=lembrete.getId()%>"><button  class="badge badge-sm"> deletar</button></a></td></tr>
   		<%
 		  	}
@@ -66,9 +76,9 @@ String pageName = uri.substring(uri.lastIndexOf("/")+1);%>
   </table>
   <hr class="my-4">
   <%
-  if(pedido.getLista().size() > 0){
+  if(pedido.getListaPorLogin(iduser).size() > 0){
 	  %>
-	  <marquee><%=pedido.getLista()%></marquee>
+	  <marquee><%=pedido.getListaPorLogin(iduser)%></marquee>
 	  <%
   }else{
 	  %>
@@ -78,7 +88,7 @@ String pageName = uri.substring(uri.lastIndexOf("/")+1);%>
   %>
   
 <!--   <p>It uses utility classes for typography and spacing to space content out within the larger container.</p> -->
-  <a href="cliente.jsp" class="btn btn-lg btn-warning">Clientes</a> | <a href="prato.jsp" class="btn btn-lg btn-warning">Itens</a> | <a href="pedido.jsp" class="btn btn-lg btn-warning">Pedido</a><p>
+  <a href="cliente.jsp" class="btn btn-lg btn-warning">Clientes</a> | <a href="prato.jsp" class="btn btn-lg btn-warning">Itens</a> | <a href="pedido.jsp" class="btn btn-lg btn-warning">Pedido</a> | <a href="Controller?cmd=sair" class="btn btn-lg btn-danger">Sair</a><p>
 </div>
 </div>
 
@@ -99,7 +109,75 @@ String pageName = uri.substring(uri.lastIndexOf("/")+1);%>
       <div class="modal-body">
       	<span>Texto</span><br>
         <textarea id="observacao" name="textolembrete" style=' max-width:100%;min-height:100px; height:100%; width:100%;'></textarea>
+        <input type="hidden" name="idDono" value="<%=iduser%>">
       </div>
+      
+       <div class="modal-body">
+       <table>
+       	<tr><td>Dia</td><td>Mês</td><td>Ano</td> <td>hora</td><td>min</td></tr>
+       <tr>
+       	<td><select name="dialembrete">
+      		<%for(int i = 0; i < 31; i++) {
+      		String aux;
+      			if(i < 9){
+      				aux = "0"+(i+1);
+      			}else{
+      				aux = ""+(i+1);
+      			}
+      			%>
+      			<option value="<%=aux%>"><%=aux%></option>
+      		<%} %>
+      		</select>
+      	</td>
+       	<td>
+       		<select name="meslembrete">
+      		<%for(int i = 0; i < 12; i++){
+      			String aux;
+      			Integer aux2 = i + 1;;
+      			if(i < 10){
+      				aux = "0"+(i);
+      			}else{
+      				aux = ""+(i);
+      			}
+      			%>
+      			<option value="<%=aux%>"><%=aux2%></option>
+      		<%} %>
+      		</select>
+       	</td>
+       	<td>
+       		<select id="anolembrete" name="anolembrete"></select>
+       	</td>
+       	<td>
+       		<select name="horalembrete">
+      		<%for(int i = 0; i < 24; i++){
+      			String aux;
+      			if(i < 9){
+      				aux = "0"+(i+1);
+      			}else{
+      				aux = ""+(i+1);
+      			}
+      			%>
+      			<option value="<%=aux%>"><%=aux%></option>
+      		<%} %>
+      		</select>
+       	</td>
+       	<td>
+       		<select name="minlembrete">
+      		<%for(int i = 0; i < 60; i++){
+      			String aux;
+      			if(i < 9){
+      				aux = "0"+(i+1);
+      			}else{
+      				aux = ""+(i+1);
+      			}
+      			%>
+      			<option value="<%=aux%>"><%=aux%></option>
+      		<%} %>
+      		</select>
+       	</td>
+       </tr>
+       </table>
+      </div>	
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
         <button type="submit" class="btn btn-primary">Salvar</button>
@@ -108,9 +186,20 @@ String pageName = uri.substring(uri.lastIndexOf("/")+1);%>
   </div>
 </div>
 </form>
+
+
 <script>
 
 	$(document).ready(function(){
+	
+	var ano = new Date().getFullYear();
+	var options='';
+	for(i = ano; i <= ano + 3 ; i++){
+	    options+='<option value="'+i+'">'+i+'</option>';
+	}
+	$("#anolembrete").append(options);
+	
+	
 	
 	$("#titulo").css({"font-size":"35px"});
 	
@@ -120,7 +209,7 @@ String pageName = uri.substring(uri.lastIndexOf("/")+1);%>
 	$("#msg").fadeIn(500);
 	
 	setInterval(function(){hora()}, 1000);
-	
+	setInterval(function(){startCountdown()}, 1000);
 	function hora(){
 		var tempo = new Date();
 		var ano = tempo.getFullYear();
@@ -167,7 +256,11 @@ String pageName = uri.substring(uri.lastIndexOf("/")+1);%>
 		$(".titulolembrete").fadeOut(500);
 		$(".titulolembrete").fadeIn(500);
 	}
+	
+	
+	
 	});
+	
 </script>
 
 </body>
