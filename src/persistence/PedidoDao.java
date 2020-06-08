@@ -9,7 +9,7 @@ public class PedidoDao extends Dao{
 	public String gravarPedido(Pedido pedido) {
 		try {
 			conectarBanco();
-			stmt = con.prepareStatement("insert into pedido (cliente, clienteId, endereco, prato, observacao, preco, idDono) values (?,?,?,?,?,?,?)");
+			stmt = con.prepareStatement("insert into pedido (cliente, clienteId, endereco, prato, observacao, preco, idDono, status) values (?,?,?,?,?,?,?,?)");
 			stmt.setString(1, pedido.getNomeCliente());
 			stmt.setInt(2, pedido.getIdCliente());
 			stmt.setString(3, pedido.getEnderecoCliente());
@@ -17,6 +17,7 @@ public class PedidoDao extends Dao{
 			stmt.setString(5, pedido.getObs());
 			stmt.setString(6, pedido.getValor());
 			stmt.setInt(7, pedido.getIdDono());
+			stmt.setString(8, pedido.getStatus());
 			stmt.execute();
 			con.close();
 			return "Pedido salvo com sucesso!!";

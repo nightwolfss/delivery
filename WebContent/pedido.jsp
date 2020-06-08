@@ -102,7 +102,7 @@ for(Prato p : pratos){
 </table>
 
 <input type="hidden" name="idDono" value="<%=iduser%>">
-<input type="hidden" name="status" value="<%=iduser%>">
+<input type="hidden" name="status" value="Preparando">
 <input type="button" class="btn btn-success" value="Adicionar" onclick="carrinho()"><br>
 
 <!-- Modal -->
@@ -145,7 +145,7 @@ if("enviado".equalsIgnoreCase(p.getStatus())){
 	cor = "green";
 }
 if("preparando".equalsIgnoreCase(p.getStatus())){
-	cor = "red";
+	cor = "blue";
 }
 %>
 
@@ -154,7 +154,7 @@ if("preparando".equalsIgnoreCase(p.getStatus())){
 		<td><a href="detalhepedido.jsp?idpedido=<%=p.getId()%>"><%=p.getNomeCliente()%>(<%=p.getIdCliente()%>)</a></td>
 		<td><%=p.getEnderecoCliente()%></td>
 		<td><%=p.getPrato()%></td>
-		<td><%=p.getHora()%></td>
+		<td><%=p.getHora().toString().substring(11)%></td>
 		<td><%=p.getObs()%></td>
 		<td><%=p.getValor()%></td>
 		<td><%=p.getStatus()%></td>

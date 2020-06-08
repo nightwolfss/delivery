@@ -129,7 +129,7 @@ public class Controller extends HttpServlet {
 		p.setValor(request.getParameter("preco"));
 		p.setIdDono(Integer.parseInt(request.getParameter("idDono")));
 		p.setStatus(request.getParameter("status"));
-		
+		System.out.println("Status: "+ p.getStatus());
 		request.setAttribute("msg", pd.gravarPedido(p));
 		request.getRequestDispatcher("pedido.jsp").forward(request, response);
 	}
