@@ -6,36 +6,38 @@ $(document).ready(function(){
 	});
 	
 	
-	$("#acao").change(function(){
-		$("#acao").each(function(){
-			let idpedido = $(this).closest("tr").find("#idpedido").text();
-			let acao = $(this).val();
-			let cor = 'black';
-			
-			console.log(idpedido);
-			console.log(acao);
-			
-			$.ajax({
-				type : 'POST',
-				data : {id : idpedido, status : acao},
-				url : 'Controller?cmd=alterarStatusPedido',
-				success : function(resultado){
-					console.log(acao);
-					if(acao == 'Cancelado'){
-						cor = "red";
-					}
-					if(acao == 'Enviado'){
-						cor = "green";
-					}
-					if(acao == 'Preparando'){
-						cor = "blue";
-					}
-					$("#acao").closest("tr").fadeOut();
-					$("#acao").closest("tr").css({"color":cor});
-					$("#acao").closest("tr").fadeIn();
+	$("select").change(function(){
+		var idpedido = $(this).closest("tr").find("#idpedido").text();
+		var acao = $(this).closest("select").val();
+		var cor = 'white';
+		
+		
+		$.ajax({
+			type : 'POST',
+			context : this,
+			data : {id : idpedido, status : acao},
+			url : 'Controller?cmd=alterarStatusPedido',
+			success : function(resultado){
+				
+				if(acao == 'Cancelado'){
+					cor = "#DCDCDC";
 				}
-			});
+				if(acao == 'Enviado'){
+					cor = "#66CDAA";
+				}
+				if(acao == 'Preparando'){
+					cor = "#E0FFFF";
+				}
+				
+				$(this).closest("tr").fadeOut();
+				$(this).closest("tr").css({"background-color": cor});
+				$(this).closest("tr").find("#statust").text(acao);
+				$(this).closest("tr").fadeIn();
+				
+			}
 		});
+		
+		
 	});
 	
 });

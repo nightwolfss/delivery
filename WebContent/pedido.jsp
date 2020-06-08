@@ -139,17 +139,17 @@ for(Pedido p : pedidos){
 	System.out.println(p);
 String cor = "black";
 if("cancelado".equalsIgnoreCase(p.getStatus())){
-	cor = "red";
+	cor = "#DCDCDC";
 }
 if("enviado".equalsIgnoreCase(p.getStatus())){
-	cor = "green";
+	cor = "#ADD8E6";
 }
 if("preparando".equalsIgnoreCase(p.getStatus())){
-	cor = "blue";
+	cor = "#F0FFF0";
 }
 %>
 
-	<tr style="color: <%=cor%>">
+	<tr style="background-color: <%=cor%>">
 		<td id="idpedido"><%=p.getId()%></td>
 		<td><a href="detalhepedido.jsp?idpedido=<%=p.getId()%>"><%=p.getNomeCliente()%>(<%=p.getIdCliente()%>)</a></td>
 		<td><%=p.getEnderecoCliente()%></td>
@@ -157,7 +157,7 @@ if("preparando".equalsIgnoreCase(p.getStatus())){
 		<td><%=p.getHora().toString().substring(11)%></td>
 		<td><%=p.getObs()%></td>
 		<td><%=p.getValor()%></td>
-		<td><%=p.getStatus()%></td>
+		<td  id="statust"><%=p.getStatus()%></td>
 		<td>
 			<select name="acao" id="acao">
 				<option value="" disabled selected>Selecione</option>
