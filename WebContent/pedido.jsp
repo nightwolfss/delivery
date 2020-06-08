@@ -28,7 +28,7 @@ if(user == null){
 <title>Pedido</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="icons/css/all.css">
@@ -46,7 +46,7 @@ if(user == null){
 <hr>
 
 <div class="container" style="background-color: white; border-radius: 2px;">
-<span id="relogio"></span>
+<span id="relogio">-</span>
 </div>
 
 <hr>
@@ -102,6 +102,7 @@ for(Prato p : pratos){
 </table>
 
 <input type="hidden" name="idDono" value="<%=iduser%>">
+<input type="hidden" name="status" value="<%=iduser%>">
 <input type="button" class="btn btn-success" value="Adicionar" onclick="carrinho()"><br>
 
 <!-- Modal -->
@@ -128,22 +129,43 @@ for(Prato p : pratos){
 </form>
 
 <p>
-<table id="tabela2" class="table table-sm table-striped container" style="background-color: white; border-radius: 2px; box-shadow: 10px 10px 50px grey;">
-	<thead class="thead-dark"><tr><th>ID</th><th>Cliente</th><th>Endereço</th><th>Prato</th><th>Hora do Pedido</th><th>Observação</th><th>Preço</th><th>Deletar</th></tr></thead>
+
+<table id="tabela2" class="container" style="background-color: white; border-radius: 2px; box-shadow: 10px 10px 50px grey;">
+	<thead><tr><th>ID</th><th>Cliente</th><th>Endereço</th><th>Prato</th><th>Hora do Pedido</th><th>Observação</th><th>Preço</th><th>Status</th><th>Ação</th></tr></thead>
+	<tbody>
 <%List<Pedido> pedidos = ped.getListaPorLogin(iduser);
+
 for(Pedido p : pedidos){
+	System.out.println(p);
+String cor = "black";
+if("cancelado".equalsIgnoreCase(p.getStatus())){
+	cor = "red";
+}
+if("enviado".equalsIgnoreCase(p.getStatus())){
+	cor = "green";
+}
+if("preparando".equalsIgnoreCase(p.getStatus())){
+	cor = "red";
+}
 %>
-<tbody>
-	<tr>
-		<td><%=p.getId()%></td>
+
+	<tr style="color: <%=cor%>">
+		<td id="idpedido"><%=p.getId()%></td>
 		<td><a href="detalhepedido.jsp?idpedido=<%=p.getId()%>"><%=p.getNomeCliente()%>(<%=p.getIdCliente()%>)</a></td>
 		<td><%=p.getEnderecoCliente()%></td>
 		<td><%=p.getPrato()%></td>
 		<td><%=p.getHora()%></td>
 		<td><%=p.getObs()%></td>
 		<td><%=p.getValor()%></td>
-		<td><a href="Controller?cmd=deletarpedido&id=<%=p.getId()%>">
-			<span style="color: red;"><i class="fas fa-user-times"></i></span></a></td>
+		<td><%=p.getStatus()%></td>
+		<td>
+			<select name="acao" id="acao">
+				<option value="" disabled selected>Selecione</option>
+				<option value="Cancelado">Cancelar</option>
+				<option value="Enviado">Enviar</option>
+				<option value="Preparando">Preparando</option>
+			</select>
+		</td>
 	</tr>
 <%
 }

@@ -38,7 +38,7 @@ if(user == null){
 </div>
 <hr>
 <div class="container" style="background-color: white; border-radius: 2px;">
-<span id="relogio">hoje: </span> <span><%=user%></span>
+<span id="nomeUsuario">Olá <%=user%>, </span> <span id="relogio">-</span>
 </div>
 <hr>
 <div class="container">
@@ -90,7 +90,7 @@ if(user == null){
   %>
   
 <!--   <p>It uses utility classes for typography and spacing to space content out within the larger container.</p> -->
-  <a href="cliente.jsp" class="btn btn-lg btn-warning">Clientes</a> | <a href="prato.jsp" class="btn btn-lg btn-warning">Itens</a> | <a href="pedido.jsp" class="btn btn-lg btn-warning">Pedido</a> | <a href="Controller?cmd=sair" class="btn btn-lg btn-danger">Sair</a><p>
+  <a href="cliente.jsp" class="btn btn-sm btn-warning">Clientes</a> | <a href="prato.jsp" class="btn btn-sm btn-warning">Itens</a> | <a href="pedido.jsp" class="btn btn-sm btn-warning">Pedido</a> | <a href="Controller?cmd=sair" class="btn btn-sm btn-danger">Sair</a><p>
 </div>
 </div>
 

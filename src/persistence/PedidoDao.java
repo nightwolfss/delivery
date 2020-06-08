@@ -40,6 +40,21 @@ public class PedidoDao extends Dao{
 		
 	}
 	
+	public String atualizarStatusPedido(Integer id, String status){
+		try {
+			conectarBanco();
+			stmt = con.prepareStatement("update pedido set status = ? where id = ?");
+			stmt.setString(1, status);
+			stmt.setInt(2, id);
+			stmt.execute();
+			con.close();
+			return "O Pedido foi alterado com sucesso";
+		} catch (Exception e) {
+			return "Falha ao alterar pedido: "+ e.getMessage();
+		}
+		
+	}
+	
 	public ArrayList<Pedido> listaPedidos(){
 		ArrayList<Pedido> lista = new ArrayList<Pedido>();
 		Pedido p;
@@ -58,6 +73,7 @@ public class PedidoDao extends Dao{
 				p.setObs(rs.getString("observacao"));
 				p.setHora(rs.getTimestamp("hora"));
 				p.setValor(rs.getString("preco"));
+				p.setStatus(rs.getString("status"));
 				
 				lista.add(p);
 			}
@@ -87,6 +103,7 @@ public class PedidoDao extends Dao{
 				pedido.setObs(rs.getString("observacao"));
 				pedido.setHora(rs.getTimestamp("hora"));
 				pedido.setValor(rs.getString("preco"));
+				pedido.setStatus(rs.getString("status"));
 			}
 			con.close();
 		} catch (Exception e) {
@@ -100,7 +117,7 @@ public class PedidoDao extends Dao{
 		Pedido p;
 		try {
 			conectarBanco();
-			stmt = con.prepareStatement("SELECT * FROM pedido WHERE DATE(hora) = CURDATE() and idDono = ? order by hora desc");
+			stmt = con.prepareStatement("SELECT * FROM pedido WHERE  idDono = ? order by hora desc");
 			stmt.setInt(1, idDono);
 			rs = stmt.executeQuery();
 			
@@ -114,6 +131,7 @@ public class PedidoDao extends Dao{
 				p.setObs(rs.getString("observacao"));
 				p.setHora(rs.getTimestamp("hora"));
 				p.setValor(rs.getString("preco"));
+				p.setStatus(rs.getString("status"));
 				
 				lista.add(p);
 			}

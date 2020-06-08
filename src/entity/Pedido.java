@@ -27,11 +27,12 @@ public class Pedido {
 
 	private Pedido pedido;
 	
+	private String status;
+	
 	ArrayList<Pedido> lista;
 	
 	ArrayList<Pedido> listaPorLogin;
 	
-
 	
 	public Long getId() {
 		return id;
@@ -107,6 +108,14 @@ public class Pedido {
 
 	public void setIdDono(Integer idDono) {
 		this.idDono = idDono;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public ArrayList<Pedido> getLista() {

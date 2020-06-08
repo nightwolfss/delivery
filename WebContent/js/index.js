@@ -7,6 +7,7 @@ $(document).ready(function(){
 	}
 	$("#anolembrete").append(options);
 	
+	$("#nomeUsuario").css({"text-align":"right"});
 	
 	
 	$("#titulo").css({"font-size":"35px"});

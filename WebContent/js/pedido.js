@@ -1,11 +1,42 @@
 $(document).ready(function(){
 	$("#valor").mask("999.999.990,00", {reverse:true});
+	
+	$("#titulo").css({
+		"font-size" : "35px"
+	});
+	
+	
+	$("#acao").change(function(){
+		let idpedido = $("#idpedido").text();
+		let acao = $("#acao").val();
+		let cor = 'black';
+		$.ajax({
+			type : 'POST',
+			
+			data : {id : idpedido, status : acao},
+			
+			url : 'Controller?cmd=alterarStatusPedido',
+			
+			success : function(resultado){
+				console.log(acao);
+				if(acao == 'Cancelado'){
+					cor = "red";
+				}
+				if(acao == 'Enviado'){
+					cor = "green";
+				}
+				if(acao == 'Preparando'){
+					cor = "blue";
+				}
+				$("#acao").closest("tr").fadeOut();
+				$("#acao").closest("tr").css({"color":cor});
+				$("#acao").closest("tr").fadeIn();
+			}
+		});
+	});
+	
 });
 
-
-$("#titulo").css({
-	"font-size" : "35px"
-});
 
 if ($("#tabela2").width() > $("#prato").width()) {
 	$("#prato").width($("#tabela2").width());

@@ -102,6 +102,9 @@ public class Controller extends HttpServlet {
 		if("logar".equalsIgnoreCase(cmd)) {
 			login(request, response);
 		}
+		if("alterarStatusPedido".equalsIgnoreCase(cmd)) {
+			alterarStatusPedido(request, response);
+		}
 		
 	}
 
@@ -125,6 +128,7 @@ public class Controller extends HttpServlet {
 		p.setObs(request.getParameter("observacao"));
 		p.setValor(request.getParameter("preco"));
 		p.setIdDono(Integer.parseInt(request.getParameter("idDono")));
+		p.setStatus(request.getParameter("status"));
 		
 		request.setAttribute("msg", pd.gravarPedido(p));
 		request.getRequestDispatcher("pedido.jsp").forward(request, response);
@@ -283,5 +287,15 @@ public class Controller extends HttpServlet {
 		String mensagem = ldao.consultarLoginPorNome(nome);
 		
 		out.print(mensagem);	
+	}
+	
+	private void alterarStatusPedido(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		PedidoDao pd = new PedidoDao();
+		
+		Integer id = Integer.parseInt(request.getParameter("id"));
+		String status = request.getParameter("status");
+		
+		String msg = pd.atualizarStatusPedido(id, status);
+				
 	}
 }

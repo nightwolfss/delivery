@@ -33,7 +33,7 @@ if(user == null){
 <hr>
 
 <div class="container" style="background-color: white; border-radius: 2px;">
-	<span id="relogio"></span>
+	<span id="relogio">-</span>
 </div>
 
 <hr>
