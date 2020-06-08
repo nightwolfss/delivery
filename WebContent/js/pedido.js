@@ -23,10 +23,10 @@ $(document).ready(function(){
 					cor = "#DCDCDC";
 				}
 				if(acao == 'Enviado'){
-					cor = "#66CDAA";
+					cor = "#ADD8E6";
 				}
 				if(acao == 'Preparando'){
-					cor = "#E0FFFF";
+					cor = "#F0FFF0";
 				}
 				
 				$(this).closest("tr").fadeOut();
